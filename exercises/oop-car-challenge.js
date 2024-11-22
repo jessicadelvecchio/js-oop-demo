@@ -1,34 +1,64 @@
 // **Part One**
-// TODO Create a class for vehicle. Each vehicle instance should have the following properties: make, model, year
+// Create a class for vehicle. Each vehicle instance should have the following properties: make, model, year
 // Each vehicle instance should have access to a method called ***honk***, which returns the string “Beep.”
-
-let myFirstVehicle = new Vehicle("Honda", "Monster Truck", 1999);
-myFirstVehicle.honk(); // "Beep."
-
 // Each vehicle instance should have a method called toString, which returns the string containing the make, model and year.
 
-let myFirstVehicle = new Vehicle("Honda", "Monster Truck", 1999);
-myFirstVehicle.toString(); // "The vehicle is a Honda Monster Truck from 1999."
+class Vehicle {
+  constructor(a, b, c) {
+    this.make = a;
+    this.model = b;
+    this.year = c;
+  }
+
+  honk() {
+    console.log("Beep");
+  }
+
+  toString() {
+    console.log(
+      `The vehicle is a ${this.make} ${this.model} from ${this.year}.`
+    );
+  }
+}
+
+// let myFirstVehicle = new Vehicle("Honda", "Monster Truck", 1999);
+// myFirstVehicle.honk(); // "Beep."
+// myFirstVehicle.toString(); // "The vehicle is a Honda Monster Truck from 1999."
 
 // **Part Two**
-// TODO Create a class for a car. The ***Car*** class should inherit from ***Vehicle*** and each car instance should have a property called ***numWheels*** which has a value of 4.
+// Create a class for a car. The ***Car*** class should inherit from ***Vehicle*** and each car instance should have a property called ***numWheels*** which has a value of 4.
 
-let myFirstCar = new Car("Toyota", "Corolla", 2005);
-myFirstCar.toString(); // "The vehicle is a Toyota Corolla from 2005."
-myFirstCar.honk(); // "Beep."
-myFirstCar.numWheels; // 4
+class Car extends Vehicle {
+  constructor(a, b, c) {
+    super(a, b, c);
+    this.numWheels = 4;
+  }
+}
+
+// let myFirstCar = new Car("Toyota", "Corolla", 2005);
+// myFirstCar.toString(); // "The vehicle is a Toyota Corolla from 2005."
+// myFirstCar.honk(); // "Beep."
+// myFirstCar.numWheels; // 4
 
 // **Part Three**
 // TODO Create a class for a Motorcycle. This class should inherit from ***Vehicle*** and each motorcycle instance should have a property called ***numWheels*** which has a value of 2. It should also have a ***revEngine*** method which returns “VROOM!!!”
 
-let myFirstMotorcycle = new Motorcycle("Honda", "Nighthawk", 2000);
+class Motorcycle extends Vehicle {
+  constructor(a, b, c) {
+    super(a, b, c);
 
-myFirstMotorcycle.toString();
-// "The vehicle is a Honda Nighthawk from 2000."
+    this.numWheels = 2;
+  }
+  revEngine() {
+    console.log("VROOM!!!");
+  }
+}
 
-myFirstMotorcycle.honk(); // "Beep."
-myFirstMotorcycle.revEngine(); // "VROOM!!!"
-myFirstMotorcycle.numWheels; // 2
+// let myFirstMotorcycle = new Motorcycle("Honda", "Nighthawk", 2000);
+// myFirstMotorcycle.toString(); // "The vehicle is a Honda Nighthawk from 2000."
+// myFirstMotorcycle.honk(); // "Beep."
+// myFirstMotorcycle.revEngine(); // "VROOM!!!"
+// myFirstMotorcycle.numWheels; // 2
 
 // **Part Four**
 
@@ -36,15 +66,30 @@ myFirstMotorcycle.numWheels; // 2
 
 // A garage should also have an ***add*** method, which attempts to add a vehicle to the array of vehicles. However, if you try to add something which is *not* a vehicle, the garage should return the message “Only vehicles are allowed in here!”. Also, if the garage is at capacity, it should say “Sorry, we’re full.”
 
+class Garage {
+  constructor(capcity) {
+    this.vehicles = [];
+    this.capacity = capcity;
+  }
+  add(newVehicle) {
+    if (!(newVehicle instanceof Vehicle)) {
+      return "Only vehicles allowed in here!";
+    }
+    if (this.vehicles.length >= this.capacity) {
+      return "Sorry, we're full.";
+    } else {
+      this.vehicles.push(newVehicle);
+      return "Vehicle added!";
+    }
+  }
+}
+
 let garage = new Garage(2);
 garage.vehicles; // []
 garage.add(new Car("Hyundai", "Elantra", 2015)); // "Vehicle added!"
 garage.vehicles; // [Car]
 garage.add("Taco"); // "Only vehicles are allowed in here!"
-
-garage.add(new Motorcycle("Honda", "Nighthawk", 2000));
-// "Vehicle added!"
+garage.add(new Motorcycle("Honda", "Nighthawk", 2000)); // "Vehicle added!"
 garage.vehicles; // [Car, Motorcycle]
-
 garage.add(new Motorcycle("Honda", "Nighthawk", 2001));
 // "Sorry, we're full."
